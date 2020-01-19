@@ -31,10 +31,12 @@ var customers_delayed int
 var area_num_in_queue float64
 var area_server_status float64
 
-var max_customers_served = 1000
+var max_customers_served = 10
 
-var lambda_service float64 = 2.0
 var lambda_interarrival float64 = 1.0
+var lambda_service float64 = 2
+
+var total_time float64
 
 func main() {
 
@@ -44,6 +46,8 @@ func main() {
 		//determine the next event
 		next_event()
 
+		update_stats()
+
 		switch next_event_type {
 		case 1:
 			arrive()
@@ -51,13 +55,14 @@ func main() {
 			departure()
 		}
 
-		update_stats()
-
 	}
 
 	plot(interarrivals, "arr.png")
 
 	report()
+
+	fmt.Println(simulation_clock)
+	fmt.Println(total_time)
 
 }
 
@@ -68,6 +73,7 @@ func initialize() {
 	last_event_time = 0.0
 
 	num_in_queue = 0
+	IS_BUSY = false
 
 	interarrivals = append(interarrivals, next_arrival_time)
 }
@@ -131,29 +137,35 @@ func update_stats() {
 	event_interarrival_time = simulation_clock - last_event_time
 	last_event_time = simulation_clock
 
+	total_time += event_interarrival_time
+
 	//adding the time in which we have customers in queue times
 	area_num_in_queue += float64(num_in_queue) * event_interarrival_time
 
 	//adding the time in which the server is busy
 	var busy float64
 	if IS_BUSY {
-		busy = 0.0
-	} else {
 		busy = 1.0
+	} else {
+		busy = 0.0
 	}
 	area_server_status = area_server_status + (busy * event_interarrival_time)
 
 }
 
 func report() {
-	fmt.Println("average delay in queue:")
-	fmt.Println(total_delays / float64(customers_delayed))
 
-	fmt.Println("average number in queue:")
-	fmt.Println(area_num_in_queue / simulation_clock)
+	fmt.Println("Mean interarrival time: " + float_to_string(1/lambda_interarrival))
 
-	fmt.Println("server utilization:")
-	fmt.Println(area_server_status / simulation_clock)
+	fmt.Println("Mean service time: " + float_to_string(1/lambda_service))
+
+	fmt.Println("Average delay in queue: " + float_to_string(total_delays/float64(customers_delayed)))
+
+	fmt.Println("Average number in queue: " + float_to_string(area_num_in_queue/simulation_clock))
+
+	fmt.Println("Server utilization: " + float_to_string(area_server_status/simulation_clock))
+
+	fmt.Println("Total time of the simulation: " + float_to_string(simulation_clock))
 
 }
 
@@ -181,7 +193,7 @@ func plot(XAxis []float64, filename string) {
 	graph := chart.Chart{
 		Series: []chart.Series{
 			chart.ContinuousSeries{
-				XValues: XAxis[0:100],
+				XValues: XAxis[0:10],
 				YValues: rangee,
 			},
 		},
