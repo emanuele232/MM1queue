@@ -30,6 +30,14 @@ At every iteration of the cycle we keep count of some statistics for future use.
 
 - the area underlying the number of people at any time in the queue. (the sum of the rectangles determined by the number of people in queue in every slice of time)
 - the area underlying the server utilization in time.
+
+
+## Executable
+
+To run the simulation, just execute the precompiled binary. 
+
+To compile with go build the following dependencies are necessary:
+- go get -u github.com/wcharczuk/go-chart
   
 
 
