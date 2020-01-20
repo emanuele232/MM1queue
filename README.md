@@ -39,7 +39,7 @@ From the Go doc:
 *ExpFloat64 returns an exponentially distributed float64 in the range (0, +math.MaxFloat64] with an exponential distribution whose rate parameter (lambda) is 1 and whose mean is 1/lambda (1) from the default Source. Toproduce a distribution with a different rate parameter, callers can adjust the output using:*
 $$sample = ExpFloat64() / desiredRateParameter$$
 
-## Executable
+# Executable
 
 To run the simulation, just execute the precompiled binary. 
 
