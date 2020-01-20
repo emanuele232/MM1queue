@@ -31,6 +31,12 @@ At every iteration of the cycle we keep count of some statistics for future use.
 - the area underlying the number of people at any time in the queue. (the sum of the rectangles determined by the number of people in queue in every slice of time)
 - the area underlying the server utilization in time.
 
+# Distribution
+The exponential variates are produced with the method from the standard *rand* library : *ExpFloat64()*
+
+From the Go doc:
+*ExpFloat64 returns an exponentially distributed float64 in the range (0, +math.MaxFloat64] with an exponential distribution whose rate parameter (lambda) is 1 and whose mean is 1/lambda (1) from the default Source. Toproduce a distribution with a different rate parameter, callers can adjust the output using:*
+$$sample = ExpFloat64() / desiredRateParameter$$
 
 ## Executable
 

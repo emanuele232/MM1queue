@@ -69,7 +69,7 @@ func main() {
 func initialize() {
 	//first event must be an arrive
 	next_arrival_time = exp(lambda_interarrival)
-	next_departure_time = 1.0e10
+	next_departure_time = 5.0e10
 	last_event_time = 0.0
 
 	num_in_queue = 0
@@ -113,7 +113,7 @@ func arrive() {
 func departure() {
 	if num_in_queue == 0 {
 		IS_BUSY = false
-		next_departure_time = 1.0e10
+		next_departure_time = 5.0e10
 	} else {
 		//queue not empty
 		num_in_queue = num_in_queue - 1
@@ -181,9 +181,9 @@ func float_to_string(number float64) string {
 }
 
 func plot(XAxis []float64, filename string) {
-	var rangee []float64
+	var a []float64
 	for i := 0.0; i < 100.0; i++ {
-		rangee = append(rangee, i)
+		a = append(a, i)
 	}
 
 	sort.Slice(XAxis, func(i, j int) bool {
@@ -194,7 +194,7 @@ func plot(XAxis []float64, filename string) {
 		Series: []chart.Series{
 			chart.ContinuousSeries{
 				XValues: XAxis[0:10],
-				YValues: rangee,
+				YValues: a,
 			},
 		},
 	}
